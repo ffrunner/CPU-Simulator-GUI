@@ -359,5 +359,30 @@ namespace CpuSchedulingWinForms
         {
             this.txtCodeInput.Clear();
         }
+
+        private void btnSRTF_Click(object sender, EventArgs e)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Enter number of processes:", "Number of Processes", "", -1, -1);
+            if (!string.IsNullOrEmpty(input))
+            {
+                Algorithms.srtfAlgorithm(input);
+            }
+            else
+            {
+                MessageBox.Show("You must enter a number of processes!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void btnHRRN_Click(object sender, EventArgs e)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Enter number of processes:", "Number of Processes", "", -1, -1);
+            if (!string.IsNullOrEmpty(input))
+            {
+                Algorithms.hrrnAlgorithm(input);
+            }
+            else
+            {
+                MessageBox.Show("You must enter a number of processes!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

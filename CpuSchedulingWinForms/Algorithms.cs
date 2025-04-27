@@ -59,6 +59,31 @@ namespace CpuSchedulingWinForms
                 }
                 awt = twt / np;
                 MessageBox.Show("Average waiting time for " + np + " processes" + " = " + awt + " sec(s)", "Average Awaiting Time", MessageBoxButtons.OK, MessageBoxIcon.None);
+
+                double[] tat = new double[np];
+                for (int i = 0; i < np; i++)
+                {
+                    tat[i] = wtp[i] + bp[i]; // Turnaround = Waiting + Burst
+                }
+                double totalTurnaroundTime = 0;
+                for (int i = 0; i < np; i++)
+                {
+                    totalTurnaroundTime += tat[i];
+                }
+                double att = totalTurnaroundTime / np;
+                MessageBox.Show("Average Turnaround Time = " + att.ToString("F2") + " sec(s)", "ATT", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Total Time to complete all processes (for throughput and CPU utilization)
+                double totalTime = tat[np - 1]; // Completion time of last process
+
+                // Throughput (Processes per second)
+                double throughput = np / totalTime;
+                MessageBox.Show("Throughput = " + throughput.ToString("F2") + " processes/sec", "Throughput", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // CPU Utilization
+                double totalBurstTime = bp.Sum(); // sum of burst times
+                double cpuUtilization = (totalBurstTime / totalTime) * 100;
+                MessageBox.Show("CPU Utilization = " + cpuUtilization.ToString("F2") + " %", "CPU Utilization", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (result == DialogResult.No)
             {
@@ -148,6 +173,31 @@ namespace CpuSchedulingWinForms
                     twt = twt + wtp[num];
                 }
                 MessageBox.Show("Average waiting time for " + np + " processes" + " = " + (awt = twt / np) + " sec(s)", "Average waiting time", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                double[] tat = new double[np];
+                for (int i = 0; i < np; i++)
+                {
+                    tat[i] = wtp[i] + bp[i]; // Turnaround = Waiting + Burst
+                }
+                double totalTurnaroundTime = 0;
+                for (int i = 0; i < np; i++)
+                {
+                    totalTurnaroundTime += tat[i];
+                }
+                double att = totalTurnaroundTime / np;
+                MessageBox.Show("Average Turnaround Time = " + att.ToString("F2") + " sec(s)", "ATT", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Total Time to complete all processes (for throughput and CPU utilization)
+                double totalTime = tat[np - 1]; // Completion time of last process
+
+                // Throughput (Processes per second)
+                double throughput = np / totalTime;
+                MessageBox.Show("Throughput = " + throughput.ToString("F2") + " processes/sec", "Throughput", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // CPU Utilization
+                double totalBurstTime = bp.Sum(); // sum of burst times
+                double cpuUtilization = (totalBurstTime / totalTime) * 100;
+                MessageBox.Show("CPU Utilization = " + cpuUtilization.ToString("F2") + " %", "CPU Utilization", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -246,6 +296,31 @@ namespace CpuSchedulingWinForms
                 MessageBox.Show("Average waiting time for " + np + " processes" + " = " + (awt = twt / np) + " sec(s)", "Average waiting time", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 //Console.WriteLine("\n\nAverage waiting time: " + (awt = twt / np));
                 //Console.ReadLine();
+
+                double[] tat = new double[np];
+                for (int i = 0; i < np; i++)
+                {
+                    tat[i] = wtp[i] + bp[i]; // Turnaround = Waiting + Burst
+                }
+                double totalTurnaroundTime = 0;
+                for (int i = 0; i < np; i++)
+                {
+                    totalTurnaroundTime += tat[i];
+                }
+                double att = totalTurnaroundTime / np;
+                MessageBox.Show("Average Turnaround Time = " + att.ToString("F2") + " sec(s)", "ATT", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Total Time to complete all processes (for throughput and CPU utilization)
+                double totalTime = tat[np - 1]; // Completion time of last process
+
+                // Throughput (Processes per second)
+                double throughput = np / totalTime;
+                MessageBox.Show("Throughput = " + throughput.ToString("F2") + " processes/sec", "Throughput", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // CPU Utilization
+                double totalBurstTime = bp.Sum(); // sum of burst times
+                double cpuUtilization = (totalBurstTime / totalTime) * 100;
+                MessageBox.Show("CPU Utilization = " + cpuUtilization.ToString("F2") + " %", "CPU Utilization", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -261,9 +336,9 @@ namespace CpuSchedulingWinForms
             double timeQuantum;
             double waitTime = 0, turnaroundTime = 0;
             double averageWaitTime, averageTurnaroundTime;
-            double[] arrivalTime = new double[10];
-            double[] burstTime = new double[10];
-            double[] temp = new double[10];
+            double[] arrivalTime = new double[np];
+            double[] burstTime = new double[np];
+            double[] temp = new double[np];
             int x = np;
 
             DialogResult result = MessageBox.Show("Round Robin Scheduling", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
@@ -338,7 +413,175 @@ namespace CpuSchedulingWinForms
                 averageTurnaroundTime = Convert.ToInt64(turnaroundTime * 1.0 / np);
                 MessageBox.Show("Average wait time for " + np + " processes: " + averageWaitTime + " sec(s)", "", MessageBoxButtons.OK);
                 MessageBox.Show("Average turnaround time for " + np + " processes: " + averageTurnaroundTime + " sec(s)", "", MessageBoxButtons.OK);
+
+                double throughput = np / total; // np = number of processes, total = total time
+                MessageBox.Show("Throughput: " + throughput.ToString("F2") + " processes/sec", "Throughput", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Calculate CPU Utilization
+                double totalBurstTime = 0;
+                for (int j = 0; j < np; j++)
+                {
+                    totalBurstTime += burstTime[j];
+                }
+                double cpuUtilization = (totalBurstTime / total) * 100;
+                MessageBox.Show("CPU Utilization: " + cpuUtilization.ToString("F2") + " %", "CPU Utilization", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             }
+        }
+        
+        public static void srtfAlgorithm(string userInput)
+        {
+            int np = Convert.ToInt16(userInput);
+            double[] arrival = new double[np];
+            double[] burst = new double[np];
+            double[] remaining = new double[np];
+            double[] completion = new double[np];
+            double totalWait = 0, totalTurnaround = 0;
+            int complete = 0, currentTime = 0, minIndex;
+            double minRemainingTime;
+            bool found;
+
+            // Input arrival and burst times
+            for (int i = 0; i < np; i++)
+            {
+                arrival[i] = Convert.ToDouble(Microsoft.VisualBasic.Interaction.InputBox($"Enter arrival time for P{i + 1}:", "Arrival Time", "", -1, -1));
+                burst[i] = Convert.ToDouble(Microsoft.VisualBasic.Interaction.InputBox($"Enter burst time for P{i + 1}:", "Burst Time", "", -1, -1));
+                remaining[i] = burst[i];
+            }
+
+            while (complete != np)
+            {
+                minIndex = -1;
+                minRemainingTime = double.MaxValue;
+                found = false;
+
+                // Find process with minimum remaining time at current time
+                for (int i = 0; i < np; i++)
+                {
+                    if (arrival[i] <= currentTime && remaining[i] > 0 && remaining[i] < minRemainingTime)
+                    {
+                        minRemainingTime = remaining[i];
+                        minIndex = i;
+                        found = true;
+                    }
+                }
+
+                if (!found)
+                {
+                    currentTime++;
+                    continue;
+                }
+
+                remaining[minIndex]--;
+                currentTime++;
+
+                if (remaining[minIndex] == 0)
+                {
+                    complete++;
+                    completion[minIndex] = currentTime;
+                }
+            }
+
+            // Calculate Turnaround Time and Waiting Time
+            for (int i = 0; i < np; i++)
+            {
+                double turnaround = completion[i] - arrival[i];
+                double waiting = turnaround - burst[i];
+                totalTurnaround += turnaround;
+                totalWait += waiting;
+            }
+
+            double averageWait = totalWait / np;
+            double averageTurnaround = totalTurnaround / np;
+
+            // Calculate Throughput
+            double totalExecutionTime = completion.Max();
+            double throughput = np / totalExecutionTime;
+
+            // Calculate CPU Utilization
+            double cpuUtilization = (burst.Sum() / totalExecutionTime) * 100;
+
+            // Display metrics
+            MessageBox.Show($"Average Wait Time: {averageWait:F2} sec", "AWT", MessageBoxButtons.OK);
+            MessageBox.Show($"Average Turnaround Time: {averageTurnaround:F2} sec", "ATT", MessageBoxButtons.OK);
+            MessageBox.Show($"Throughput: {throughput:F2} processes/sec", "Throughput", MessageBoxButtons.OK);
+            MessageBox.Show($"CPU Utilization: {cpuUtilization:F2} %", "CPU Utilization", MessageBoxButtons.OK);
+        }
+
+       
+        public static void hrrnAlgorithm(string userInput)
+        {
+            int np = Convert.ToInt16(userInput);
+            double[] arrival = new double[np];
+            double[] burst = new double[np];
+            bool[] completed = new bool[np];
+            double[] completion = new double[np];
+            double currentTime = 0;
+            int done = 0;
+            double totalWait = 0, totalTurnaround = 0;
+
+            // Input arrival and burst times
+            for (int i = 0; i < np; i++)
+            {
+                arrival[i] = Convert.ToDouble(Microsoft.VisualBasic.Interaction.InputBox($"Enter arrival time for P{i + 1}:", "Arrival Time", "", -1, -1));
+                burst[i] = Convert.ToDouble(Microsoft.VisualBasic.Interaction.InputBox($"Enter burst time for P{i + 1}:", "Burst Time", "", -1, -1));
+                completed[i] = false;
+            }
+
+            while (done != np)
+            {
+                int selected = -1;
+                double highestRR = -1;
+
+                for (int i = 0; i < np; i++)
+                {
+                    if (arrival[i] <= currentTime && !completed[i])
+                    {
+                        double waitingTime = currentTime - arrival[i];
+                        double responseRatio = (waitingTime + burst[i]) / burst[i];
+
+                        if (responseRatio > highestRR)
+                        {
+                            highestRR = responseRatio;
+                            selected = i;
+                        }
+                    }
+                }
+
+                if (selected == -1)
+                {
+                    currentTime++;
+                    continue;
+                }
+
+                currentTime += burst[selected];
+                completion[selected] = currentTime;
+                completed[selected] = true;
+                done++;
+            }
+
+            // Calculate Turnaround Time and Waiting Time
+            for (int i = 0; i < np; i++)
+            {
+                double turnaround = completion[i] - arrival[i];
+                double waiting = turnaround - burst[i];
+                totalTurnaround += turnaround;
+                totalWait += waiting;
+            }
+
+            double averageWait = totalWait / np;
+            double averageTurnaround = totalTurnaround / np;
+
+            // Throughput and CPU Utilization
+            double totalExecutionTime = completion.Max();
+            double throughput = np / totalExecutionTime;
+            double cpuUtilization = (burst.Sum() / totalExecutionTime) * 100;
+
+            // Display metrics
+            MessageBox.Show($"Average Wait Time: {averageWait:F2} sec", "AWT", MessageBoxButtons.OK);
+            MessageBox.Show($"Average Turnaround Time: {averageTurnaround:F2} sec", "ATT", MessageBoxButtons.OK);
+            MessageBox.Show($"Throughput: {throughput:F2} processes/sec", "Throughput", MessageBoxButtons.OK);
+            MessageBox.Show($"CPU Utilization: {cpuUtilization:F2} %", "CPU Utilization", MessageBoxButtons.OK);
         }
     }
 }
